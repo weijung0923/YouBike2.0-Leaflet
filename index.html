@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouBike Map with Leaflet</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouBike Stations Map</h1>
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <script>
+        // 初始化地圖，設置台北市的中心經緯度和縮放級別
+        var map = L.map('map').setView([25.0330, 121.5654], 13);
+
+        // 添加 OpenStreetMap 圖層
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 假設這是從 API 獲取的資料 (可替換為實際 API 呼叫)
+        var youBikeData = [
+            {
+                "sno": "500101001",
+                "sna": "YouBike2.0_捷運科技大樓站",
+                "sarea": "大安區",
+                "mday": "2024-09-30 23:56:19",
+                "ar": "復興南路二段235號前",
+                "sareaen": "Daan Dist.",
+                "snaen": "YouBike2.0_MRT Technology Bldg. Sta.",
+                "aren": "No.235， Sec. 2， Fuxing S. Rd.",
+                "act": "1",
+                "srcUpdateTime": "2024-09-30 23:58:22",
+                "updateTime": "2024-09-30 23:58:26",
+                "infoTime": "2024-09-30 23:56:19",
+                "infoDate": "2024-09-30",
+                "total": 28,
+                "available_rent_bikes": 24,
+                "latitude": 25.02605,
+                "longitude": 121.5436,
+                "available_return_bikes": 3
+            }
+            // 可以加入更多站點資料
+        ];
+
+        // 將 YouBike 資料顯示為地圖上的標記
+        youBikeData.forEach(function(station) {
+            var marker = L.marker([station.latitude, station.longitude]).addTo(map);
+            marker.bindPopup(`
+                <b>${station.sna}</b><br>
+                地點：${station.ar}<br>
+                可租借車輛數：${station.available_rent_bikes}<br>
+                可歸還車輛數：${station.available_return_bikes}
+            `);
+        });
+
+    </script>
+</body>
+</html>
